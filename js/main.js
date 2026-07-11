@@ -148,6 +148,14 @@ function updateTimerDisplay(el, remainingMs) {
 // ==================================================================
 // HOME
 // ==================================================================
+$('btn-how-to-play').addEventListener('click', () => {
+  $('dialog-how-to-play').showModal();
+});
+
+$('btn-close-how-to-play').addEventListener('click', () => {
+  $('dialog-how-to-play').close();
+});
+
 $('btn-host').addEventListener('click', () => {
   selectedLanguage = settings.language;
   selectedCategoryIds = new Set(settings.categoryIds);

@@ -240,8 +240,16 @@ broadcasts never drift apart.
 
 ## Changelog
 - **v1**: Initial architecture — Firestore/Firebase-based two-screen sync.
-- **v2 (current)**: Rebuilt on PeerJS/WebRTC per owner direction (no
-  Firebase, no server — see `timed-wordy`); dropped the hint-coin economy;
-  added a language toggle (Tagalog/English, independently-authored puzzle
-  sets, ~160 puzzles total); added an optional per-puzzle timer
-  (auto-skip-only, resets to paused, Host-clock-authoritative).
+- **v2**: Rebuilt on PeerJS/WebRTC per owner direction (no Firebase, no
+  server — see `timed-wordy`); dropped the hint-coin economy; added a
+  language toggle (Tagalog/English, independently-authored puzzle sets,
+  ~160 puzzles total); added an optional per-puzzle timer (auto-skip-only,
+  resets to paused, Host-clock-authoritative).
+- **v3 (current)**: Several rounds of puzzle-content refinement (icon swaps,
+  a few weak entries removed, four custom-generated icon images for
+  concepts with no real emoji — a calesa, cotton, a button, an "August"
+  calendar page); added an in-app **How to Play** dialog on the home screen
+  (`<dialog>` element, matching the sibling projects' use of native
+  `<dialog>` for overlays) — the README already explained how to play, but
+  nothing did for someone who opens the deployed site directly without
+  reading GitHub.

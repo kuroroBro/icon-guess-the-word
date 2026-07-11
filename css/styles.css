@@ -184,6 +184,46 @@ h1, h2, h3 {
   padding-top: 2rem;
 }
 
+#dialog-how-to-play {
+  border: var(--border-w) solid var(--surface-border);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  padding: 0;
+  max-width: 480px;
+  width: calc(100% - 2.5rem);
+  max-height: 85vh;
+}
+
+#dialog-how-to-play::backdrop {
+  background: rgba(5, 0, 15, 0.7);
+}
+
+.htp-body {
+  padding: 1.5rem;
+  overflow-y: auto;
+  max-height: 85vh;
+  box-sizing: border-box;
+}
+
+.htp-body h2 {
+  margin-bottom: 1rem;
+}
+
+.htp-steps {
+  padding-left: 1.2rem;
+  margin: 0 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  line-height: 1.4;
+}
+
+.htp-note {
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
 .home-trophy {
   font-size: 4rem;
   text-align: center;

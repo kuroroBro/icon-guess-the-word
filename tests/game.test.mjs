@@ -238,3 +238,36 @@ test('timer expiring right at deck exhaustion still ends the game', () => {
   assert.equal(checkTimerExpired(state, 10_000), true);
   assert.equal(state.phase, PHASE.GAMEOVER);
 });
+
+test('no targetScore by default — plays through the whole deck', () => {
+  const state = freshGame();
+  assert.equal(state.targetScore, null);
+});
+
+test('reaching targetScore ends the game instantly with that team as winner', () => {
+  const state = freshGame({ targetScore: 2 });
+  startGame(state);
+  assert.equal(awardPoint(state, 'a'), true);
+  assert.equal(state.phase, PHASE.PLAYING); // 1 point, not there yet
+  assert.equal(awardPoint(state, 'a'), true);
+  assert.equal(state.phase, PHASE.GAMEOVER); // hit the target
+  assert.equal(state.winner, 'a');
+  assert.equal(state.teams.a.score, 2);
+});
+
+test('targetScore win never leaves it a draw, even if reached exactly', () => {
+  const state = freshGame({ targetScore: 1 });
+  startGame(state);
+  awardPoint(state, 'b');
+  assert.equal(state.phase, PHASE.GAMEOVER);
+  assert.equal(state.winner, 'b'); // not null/draw, despite a.score === 0 !== b.score being the only difference
+});
+
+test('targetScore does not fire early and deck exhaustion still works when nobody reaches it', () => {
+  const state = freshGame({ categoryIds: ['landmarks'], targetScore: 99 });
+  startGame(state);
+  assert.equal(awardPoint(state, 'a'), true); // only 1 puzzle in this deck
+  assert.equal(state.phase, PHASE.GAMEOVER); // deck exhausted, not target reached
+  assert.equal(state.teams.a.score, 1);
+  assert.equal(state.winner, 'a'); // decided by score comparison, not the target
+});

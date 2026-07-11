@@ -111,6 +111,44 @@
   change, and the next puzzle's timer correctly resetting to paused
   (Start Timer re-enabled, Display showing the full duration again) on
   both screens.
-- Not yet done: pushing to GitHub and confirming the Actions deploy workflow
-  succeeds against a real Pages environment (needs the repo pushed to
-  `kuroroBro/icon-guess-the-word` first).
+- Confirmed live: `https://kuroroBro.github.io/icon-guess-the-word/` returns
+  HTTP 200 and serves the current build (verified via the page `<title>`
+  matching the latest commit) — the Actions deploy workflow is working
+  end-to-end against the real Pages environment.
+
+## Phase 8 — Target Score + blur-until-timer-starts (post-launch addition)
+- [x] T026 `js/game.js`: `targetScore` on game state (0/null = off);
+      `awardPoint` checks it and calls `endGame(state, teamId)` before
+      dealing another puzzle; `endGame` refactored to accept an optional
+      explicit winner (target-score win) vs. its original score-comparison
+      behavior (deck exhaustion).
+- [x] T027 `tests/game.test.mjs`: 4 new tests — off by default, reaching the
+      target ends the game with that team as winner, never a draw even at
+      exactly-tied scores otherwise, and target score doesn't fire early /
+      deck exhaustion still works when nobody reaches it.
+- [x] T028 `index.html` + `css/styles.css`: "Target Score" select at setup
+      (Play through the deck / First to 3/5/7/10/15); "First to N" pill on
+      the Host panel and banner on the Display, both hidden when off.
+- [x] T029 `js/storage.js` + `js/main.js`: persist `targetScore` in
+      settings (default off); wire the setup select through to
+      `createGame`; include `targetScore` in the redacted broadcast (not
+      secret) so the Display can show the same indicator.
+- [x] T030 `js/main.js` + `css/styles.css`: Display blurs the icon-clue
+      tiles (with a "Waiting for the Host to start the timer…" overlay
+      message) whenever a timer is configured but `timerStatus` is still
+      `paused` for the current puzzle; clears the moment the Host taps
+      Start Timer. No-op when no timer is configured at all (icons show
+      immediately, unchanged from before this existed).
+- Manual E2E (real PeerJS broker): confirmed the "First to 3" pill/banner
+  appears on both screens, awarding points short of the target keeps the
+  game going, and reaching it ends the game instantly with the correct
+  winner shown on both Host and Display. Also confirmed the icon blur:
+  blurred + overlay message before Start Timer, clear immediately after.
+
+## Open backlog (not blocking, intentionally deferred)
+- Display disconnect detection can go stale after an abrupt disconnect
+  (tab closed, crash, dropped network) — reconnecting under the same code
+  still works fine, but the Host's "connected" count may overcount until
+  the underlying WebRTC connection times out on its own. Owner decided to
+  leave this as-is for now; revisit with a ping/pong heartbeat if it causes
+  real problems in practice (see plan.md Changelog v4).

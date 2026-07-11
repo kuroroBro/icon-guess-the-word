@@ -50,6 +50,11 @@ are available, so the game fits my group and how much challenge they want.
 - Can set a **Time per Puzzle** limit (Off, 15/30/45/60/90/120 seconds) at
   setup time. When Off, no timer UI appears anywhere and play works exactly
   as before this feature existed.
+- Can set a **Target Score** (Off/"play through the deck", or First to
+  3/5/7/10/15) at setup time. When set, the first team to reach that score
+  wins immediately — the deck doesn't need to run out, and this outcome is
+  never a draw. When off (the default), the game plays exactly as before:
+  the deck runs out and the higher score wins (a tie is a draw).
 - Setup choices are made once, before the room opens; no mid-game category
   switching in this version (see Non-goals).
 
@@ -69,6 +74,12 @@ and pace, without taking control away from me.
 - The Host can still award a point or skip manually at any time regardless
   of whether the timer is running, paused, or off.
 - The countdown is visually urgent (color change) in the last 10 seconds.
+- While a timer is configured but not yet started for the current puzzle,
+  the Display blurs the icon clues (with a "Waiting for the Host to start
+  the timer…" message) instead of showing them — so teams can't get a
+  head start while the Host is still setting up the round. The Host's own
+  screen is unaffected (it always shows the icons clearly, same as the
+  answer). This blur never applies when no timer is configured at all.
 
 ### US-2: Play a round (host-judged, no typing)
 As a host running the game, I want to reveal icons, optionally give letter
@@ -95,6 +106,22 @@ just play without anyone typing.
   awarded (for a puzzle nobody can get).
 - Puzzles are never repeated within a game. When the deck is exhausted, the
   game ends and shows the final score and winner (a tie is a draw).
+
+### US-2b: Race to a target score (optional)
+As a host, I want the option to end the game as soon as a team hits a
+target score, so game night doesn't always require playing the whole deck.
+
+**Acceptance criteria**
+- If a Target Score is set, the moment a team's score reaches it, the game
+  ends immediately with that team as the winner — never a draw, since only
+  one team can reach the target on a given award.
+- Both screens show a small "First to N" indicator whenever a target is
+  set, so everyone knows what they're racing to.
+- If the deck runs out before either team reaches the target, the game
+  still ends normally by score comparison (a tie is still possible in that
+  case, same as when no target is set at all).
+- Off by default — the game plays through the whole deck exactly as before
+  this feature existed, unless the Host opts in at setup.
 
 ### US-3: One Host, one Display, one room
 As a host, I want my controller screen and the shared TV/laptop screen to
@@ -160,14 +187,16 @@ show the same live game, so I don't need anyone else's phone.
 ## Key Entities
 
 - **Settings**: language, selected category ids (within that language),
-  hints-enabled flag, timer seconds (0/null = off), team names.
+  hints-enabled flag, timer seconds (0/null = off), target score (0/null =
+  off), team names.
 - **Team**: id, name, score.
 - **Puzzle**: icons (array of emoji/strings), answer, category id,
   difficulty, revealed-letter indexes.
 - **Game**: phase (`lobby → playing → gameover`), teams, deck (shuffled
   puzzles from selected categories, easy → hard across categories), puzzle
   index, hints-enabled flag, timer seconds, timer status (`paused` |
-  `running`), timer deadline (absolute epoch ms, set only while running).
+  `running`), timer deadline (absolute epoch ms, set only while running),
+  target score (0/null = play through the whole deck instead).
 - **Category**: id, name, **language** (`tagalog` | `english`), list of
   puzzles; built-in only (no custom categories in this version). Language is
   a category-level tag — every puzzle in a category shares its language.

@@ -11,6 +11,7 @@ export const DEFAULT_SETTINGS = {
   categoryIds: CATEGORIES.filter((c) => c.language === 'tagalog').map((c) => c.id),
   hintsEnabled: true,
   timerSeconds: 30, // 0/null = no timer
+  targetScore: 0, // 0/null = no target — play through the whole deck
   teamNames: { a: 'Team A', b: 'Team B' },
 };
 

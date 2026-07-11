@@ -123,6 +123,20 @@
         <p class="muted timer-hint">When time runs out, the puzzle auto-skips and the
           next one waits, paused, until you tap Start Timer again.</p>
       </div>
+
+      <div class="panel">
+        <h3>Target Score</h3>
+        <select id="input-target-score" class="select-input">
+          <option value="0">Play through the deck</option>
+          <option value="3">First to 3</option>
+          <option value="5">First to 5</option>
+          <option value="7">First to 7</option>
+          <option value="10">First to 10</option>
+          <option value="15">First to 15</option>
+        </select>
+        <p class="muted timer-hint">If set, the first team to reach this score wins
+          immediately — the deck doesn't need to run out.</p>
+      </div>
     </div>
 
     <div class="setup-footer">
@@ -150,6 +164,7 @@
   <section id="screen-host-panel" class="screen host-view" hidden>
     <header class="game-header">
       <span id="host-category" class="pill"></span>
+      <span id="host-target" class="pill" hidden></span>
       <span id="host-room-code" class="pill"></span>
       <span id="host-peers" class="pill"></span>
     </header>
@@ -195,6 +210,7 @@
     </div>
 
     <div id="display-category" class="category-banner"></div>
+    <div id="display-target" class="category-banner" hidden></div>
 
     <div id="display-waiting" class="display-waiting">
       <p>⏳ Waiting for the Host to start the game…</p>

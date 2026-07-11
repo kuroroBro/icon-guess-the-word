@@ -94,6 +94,7 @@ function redactState(state) {
     timerSeconds: state.timerSeconds,
     timerStatus: state.timerStatus,
     timerDeadline: state.timerDeadline,
+    targetScore: state.targetScore, // not secret either — just a number
     teams: state.teams,
     winner: state.winner,
     puzzle: state.puzzle
@@ -165,6 +166,7 @@ $('btn-host').addEventListener('click', () => {
   $('input-team-b').value = settings.teamNames.b;
   $('input-hints').checked = settings.hintsEnabled;
   $('input-timer').value = String(settings.timerSeconds || 0);
+  $('input-target-score').value = String(settings.targetScore || 0);
   $('setup-error').hidden = true;
   showScreen('screen-setup');
 });
@@ -249,6 +251,7 @@ $('btn-start-room').addEventListener('click', () => {
     categoryIds: [...selectedCategoryIds],
     hintsEnabled: $('input-hints').checked,
     timerSeconds: Number($('input-timer').value),
+    targetScore: Number($('input-target-score').value),
     teamNames: {
       a: $('input-team-a').value.trim() || 'Team A',
       b: $('input-team-b').value.trim() || 'Team B',
@@ -317,6 +320,8 @@ $('btn-start-game').addEventListener('click', () => {
 function renderHostPanel() {
   const puzzle = game.puzzle;
   $('host-category').textContent = puzzle ? categoryName(puzzle.categoryId) : '';
+  $('host-target').hidden = !game.targetScore;
+  if (game.targetScore) $('host-target').textContent = `First to ${game.targetScore}`;
   $('host-room-code').textContent = room ? room.code : '';
   $('host-peers').textContent = peerCount > 0 ? `${peerCount} connected` : 'Display not connected';
   $('host-score-a').textContent = game.teams.a.score;
@@ -413,7 +418,9 @@ function resetDisplayView() {
   $('display-score-a').textContent = '0';
   $('display-score-b').textContent = '0';
   $('display-category').textContent = '';
+  $('display-target').hidden = true;
   $('display-timer').hidden = true;
+  $('display-icons').classList.remove('icons-blurred');
   $('display-waiting').hidden = false;
   $('display-playing').hidden = true;
   $('display-gameover').hidden = true;
@@ -434,6 +441,8 @@ function handleDisplayState(state, hostNow) {
   if (state.teams.b.score > prevB) bumpPlaque('b');
 
   $('display-category').textContent = state.puzzle ? categoryName(state.puzzle.categoryId) : '';
+  $('display-target').hidden = !state.targetScore;
+  if (state.targetScore) $('display-target').textContent = `First to ${state.targetScore}`;
 
   const waiting = $('display-waiting');
   const playing = $('display-playing');
@@ -450,6 +459,13 @@ function handleDisplayState(state, hostNow) {
     }
     renderIcons($('display-icons'), state.puzzle.icons);
     renderTiles($('display-tiles'), state.puzzle.masked);
+    // Blur the icon clues until the Host actually starts the timer for this
+    // puzzle — stops teams from getting a head start while the Host is
+    // still setting up the next round. Only applies when a timer is
+    // configured at all; without one there's no "not started yet" moment,
+    // so icons show immediately (unchanged from before this existed).
+    const iconsBlocked = state.timerSeconds && state.timerStatus === TIMER_STATUS.PAUSED;
+    $('display-icons').classList.toggle('icons-blurred', iconsBlocked);
   } else if (state.phase === PHASE.GAMEOVER) {
     waiting.hidden = true;
     playing.hidden = true;

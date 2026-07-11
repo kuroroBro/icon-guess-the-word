@@ -44,9 +44,12 @@ clock internally, so the engine stays unit-testable with fake time:
   slot in the current puzzle's answer (no-op if hints are off or the word is
   fully revealed already — never rejected outright, just does nothing, so
   the UI doesn't need to special-case a disabled button click)
-- `awardPoint(state, teamId)` → `teams[teamId].score += 1`, deals the next
-  puzzle from the deck, or ends the game (phase `gameover`) if the deck is
-  exhausted
+- `awardPoint(state, teamId)` → `teams[teamId].score += 1`; if a
+  `targetScore` is set and that team just reached it, ends the game
+  immediately with that team as the explicit winner (skips dealing another
+  puzzle entirely). Otherwise deals the next puzzle from the deck, or ends
+  the game (phase `gameover`, winner by score comparison) if the deck is
+  exhausted.
 - `skipPuzzle(state)` → deals the next puzzle with no score change (or ends
   the game the same way as `awardPoint` if the deck is exhausted)
 - `startTimer(state, now)` → no-op if no timer configured, outside
@@ -61,6 +64,12 @@ clock internally, so the engine stays unit-testable with fake time:
 - `timerRemainingMs(state, now)` → 0 if no timer, full duration while
   `paused` (so both screens show the configured length before it starts),
   else `deadline - now`.
+
+The internal `endGame(state, explicitWinner)` handles both end conditions
+with one function: called with an explicit team id for a target-score win
+(unambiguous — whichever team just scored), or called with no argument for
+deck exhaustion, where the winner is decided by comparing the two scores
+(a tie there is still a draw, same as before target score existed).
 
 Guard rails: every action validates the current phase (e.g. `revealLetter`
 does nothing outside `playing`). Puzzles are never repeated — the deck is
@@ -256,7 +265,7 @@ broadcasts never drift apart.
   element, matching the sibling projects' use of native `<dialog>` for
   overlays) — the README already explained how to play, but nothing did for
   someone who opens the deployed site directly without reading GitHub.
-- **v4 (current)**: Renamed the game to **Emoji Says** (from "Icon Guess the
+- **v4**: Renamed the game to **Emoji Says** (from "Icon Guess the
   Word") for a more natural-sounding title — updated everywhere user-facing
   (page title, home screen, README, meta description) and in doc/code
   headers; the repo path (`icon-guess-the-word`) and feature-branch folder
@@ -276,3 +285,23 @@ broadcasts never drift apart.
   in one test. Left as-is per owner decision (reconnect itself isn't
   broken, this is inherited from `timed-wordy`'s same pattern); revisit with
   a ping/pong heartbeat if it becomes a real problem in practice.
+- **v5**: Added a background image to the home screen (`images/home-bg.jpg`)
+  — the same "two people guessing a word from floating icon clues"
+  illustration generated for this game's card on the gondoit.work portfolio
+  page, copied into this repo (not linked cross-origin) so the game doesn't
+  depend on gondoit.work's hosting. Applied only to `#screen-home` via a
+  dark gradient overlay (same pattern as gondoit.work's own hero treatment)
+  so the title/tagline/buttons stay legible; every other screen (setup,
+  host panel, Display) is unaffected.
+- **v6 (current)**: Added an optional **Target Score** ("First to N")
+  setup option — reaching it ends the game instantly with that team as
+  winner, never a draw, without needing the deck to run out; off by default
+  so existing play-through-the-deck behavior is unchanged unless a Host
+  opts in. `endGame` was refactored to take an optional explicit winner so
+  one function serves both end conditions (target reached vs. deck
+  exhaustion). Also: the Display now blurs the icon clues (with a "Waiting
+  for the Host to start the timer…" message) whenever a timer is configured
+  but not yet started for the current puzzle, so teams can't get a head
+  start while the Host is still setting up the round — this only applies
+  when a timer exists at all; games with no timer show icons immediately,
+  same as always.

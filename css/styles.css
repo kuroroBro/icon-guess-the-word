@@ -477,6 +477,12 @@ h1, h2, h3 {
   height: 4rem;
 }
 
+.icon-image {
+  width: 75%;
+  height: 75%;
+  object-fit: contain;
+}
+
 .tiles-wrap {
   display: flex;
   justify-content: center;

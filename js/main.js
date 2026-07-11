@@ -32,12 +32,25 @@ let peerCount = 0;
 let clockOffset = 0;    // Display only: hostNow - Date.now() at last snapshot
 
 // ---------- shared render helpers (icons / letter tiles) ----------
+// Most icons are plain emoji strings. A few concepts have no real emoji
+// (e.g. a calesa/horse-carriage, a cotton boll) — for those, categories.js
+// uses an { src: 'images/icons/....png' } object instead, rendered as an
+// <img> sized to fit the same tile. Nothing about redaction changes: icon
+// values (emoji or image path) are never secret, unlike the answer text.
 function renderIcons(container, icons) {
   container.innerHTML = '';
   for (const icon of icons || []) {
     const tile = document.createElement('div');
     tile.className = 'icon-tile';
-    tile.textContent = icon;
+    if (icon && typeof icon === 'object' && icon.src) {
+      const img = document.createElement('img');
+      img.className = 'icon-image';
+      img.src = icon.src;
+      img.alt = '';
+      tile.appendChild(img);
+    } else {
+      tile.textContent = icon;
+    }
     container.appendChild(tile);
   }
 }

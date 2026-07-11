@@ -7,9 +7,10 @@ the Host taps who got it. No typing, no accounts, no in-game currency.
 
 ## How to play
 
-1. **Host a Game** — pick your categories, name your two teams, and choose
-   whether Letter Hints are available. Tap **Start Room** to get a 4-letter
-   room code.
+1. **Host a Game** — pick a language (Tagalog or English), your categories,
+   name your two teams, choose whether Letter Hints are available, and
+   optionally set a Time per Puzzle limit. Tap **Start Room** to get a
+   4-letter room code.
 2. **Join as Display** — on the TV/laptop everyone can see, open this same
    page and enter the Host's room code.
 3. **Start Game** — the Host taps Start once the Display is connected. Every
@@ -17,7 +18,10 @@ the Host taps who got it. No typing, no accounts, no in-game currency.
 4. **Play** — teams shout out their guess. The Host taps **Team A got it** /
    **Team B got it** to award the point and deal the next puzzle, or
    **Skip** if nobody can get it. If Letter Hints are on, the Host can
-   **Reveal a Letter** at any time.
+   **Reveal a Letter** at any time. If a timer is set, the Host taps
+   **Start Timer** when the next round is ready — time running out
+   auto-skips the puzzle (no point awarded) and the next one waits, paused,
+   until Start Timer is tapped again.
 5. The game ends when the puzzle deck runs out — highest score wins (a tie
    is a draw).
 
@@ -26,8 +30,16 @@ can't double as the shared Display the way some pass-the-phone games can.
 
 ## Categories
 
-Food & Local Brands · Pinoy Slang & Sayings · Teleseryes & Celebrities ·
-Historical Landmarks — 20 puzzles each, easy → hard.
+Two independent language tracks — a game session picks one, they're never
+mixed. The English set is its own set of icon puzzles, not a translation of
+the Tagalog one (the wordplay doesn't carry across languages).
+
+- **🇵🇭 Tagalog**: Food & Local Brands · Pinoy Slang & Sayings ·
+  Teleseryes & Celebrities · Historical Landmarks
+- **🇺🇸 English**: Food & Brands · Slang & Sayings · Movies & Celebrities ·
+  Landmarks
+
+~20 puzzles per category, easy → hard.
 
 ## Deploying to GitHub Pages
 

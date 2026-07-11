@@ -243,5 +243,5 @@ broadcasts never drift apart.
 - **v2 (current)**: Rebuilt on PeerJS/WebRTC per owner direction (no
   Firebase, no server — see `timed-wordy`); dropped the hint-coin economy;
   added a language toggle (Tagalog/English, independently-authored puzzle
-  sets, 160 puzzles total); added an optional per-puzzle timer
+  sets, ~160 puzzles total); added an optional per-puzzle timer
   (auto-skip-only, resets to paused, Host-clock-authoritative).

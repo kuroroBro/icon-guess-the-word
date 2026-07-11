@@ -1,4 +1,4 @@
-# Implementation Plan: Icon Guess the Word — Party Board Game
+# Implementation Plan: Emoji Says — Party Board Game
 
 **Spec**: [spec.md](./spec.md)
 
@@ -79,10 +79,14 @@ choice over grouping by category: it gives the progressive-difficulty feel
 the spec calls for while mixing categories together within each tier, so the
 game doesn't grind through one whole category before starting the next.
 
-Letter reveals (when hints are on) always fill the next blank slot
-left-to-right; a space in a multi-word answer is never a blank slot to begin
-with, so `revealLetter` skips over space characters entirely when finding
-"the next blank."
+Letter reveals (when hints are on) pick one **random** remaining blank slot
+— changed from an earlier left-to-right version, which made a multi-word
+answer's first word too predictable to always give away first. `revealLetter`
+takes an optional `rng` (same convention as `buildDeck`'s shuffle) so the
+random choice stays unit-testable with a fixed rng; production code just
+uses the default `Math.random`. A space in a multi-word answer is never a
+blank slot to begin with, so it's excluded from the candidate list entirely,
+not just skipped in iteration order.
 
 ### Networking model (one room, Host-authoritative, no client actions)
 
@@ -245,11 +249,30 @@ broadcasts never drift apart.
   language toggle (Tagalog/English, independently-authored puzzle sets,
   ~160 puzzles total); added an optional per-puzzle timer (auto-skip-only,
   resets to paused, Host-clock-authoritative).
-- **v3 (current)**: Several rounds of puzzle-content refinement (icon swaps,
-  a few weak entries removed, four custom-generated icon images for
-  concepts with no real emoji — a calesa, cotton, a button, an "August"
-  calendar page); added an in-app **How to Play** dialog on the home screen
-  (`<dialog>` element, matching the sibling projects' use of native
-  `<dialog>` for overlays) — the README already explained how to play, but
-  nothing did for someone who opens the deployed site directly without
-  reading GitHub.
+- **v3**: Several rounds of puzzle-content refinement (icon swaps, a few
+  weak entries removed, four custom-generated icon images for concepts with
+  no real emoji — a calesa, cotton, a button, an "August" calendar page);
+  added an in-app **How to Play** dialog on the home screen (`<dialog>`
+  element, matching the sibling projects' use of native `<dialog>` for
+  overlays) — the README already explained how to play, but nothing did for
+  someone who opens the deployed site directly without reading GitHub.
+- **v4 (current)**: Renamed the game to **Emoji Says** (from "Icon Guess the
+  Word") for a more natural-sounding title — updated everywhere user-facing
+  (page title, home screen, README, meta description) and in doc/code
+  headers; the repo path (`icon-guess-the-word`) and feature-branch folder
+  are unchanged. `revealLetter` changed from left-to-right to a random blank
+  slot (takes an optional `rng`, same convention as deck shuffling) so a
+  multi-word answer's first word isn't always the first one given away.
+  Two more custom icon images generated (a hardware nail for "Pako" in
+  Pangako Sa'yo — distinct from a fingernail; a "May" calendar page for
+  Mayon Volcano) plus a large batch of icon tweaks and removed weak entries
+  across both Tagalog categories, following the same pattern as v3. Also
+  investigated Display reconnect behavior: rejoining a room with the same
+  code works correctly and re-syncs current state immediately, but the
+  Host's "connected" count can go stale after an abrupt disconnect (tab
+  closed, crash, dropped network) since detection relies on either a
+  graceful goodbye message or the underlying WebRTC connection timing out on
+  its own — confirmed it does not self-correct within at least 40 seconds
+  in one test. Left as-is per owner decision (reconnect itself isn't
+  broken, this is inherited from `timed-wordy`'s same pattern); revisit with
+  a ping/pong heartbeat if it becomes a real problem in practice.

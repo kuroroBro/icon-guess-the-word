@@ -1,4 +1,7 @@
-# Feature Specification: Icon Guess the Word — Party Board Game
+# Feature Specification: Emoji Says — Party Board Game
+
+*(Renamed from "Icon Guess the Word" for a more natural-sounding title —
+the feature branch/folder path is unchanged.)*
 
 **Feature branch**: `001-icon-guess-the-word`
 **Status**: Draft
@@ -80,9 +83,11 @@ just play without anyone typing.
 - The Host screen shows everything the Display shows, **plus** the full
   answer spelled out, and the round controls.
 - If Letter Hints is on, the Host has a **Reveal a Letter** control that
-  fills in the next blank slot, left to right, on both screens (no cost, no
-  limit beyond the word's own length — pressing it once the whole word is
-  revealed does nothing). Spaces in multi-word answers (e.g. "PAN DE SAL")
+  fills in one random remaining blank slot on both screens (not left to
+  right — a fixed order made the first word of a multi-word answer too
+  predictable to give away first). No cost, no limit beyond the word's own
+  length — pressing it once the whole word is revealed does nothing.
+  Spaces in multi-word answers (e.g. "PAN DE SAL")
   are always shown and never count as a blank slot to reveal.
 - The Host has two big buttons, **Team A got it** / **Team B got it** —
   tapping one scores a point for that team and deals the next puzzle.

@@ -68,16 +68,33 @@ test('revealLetter is a no-op when hints are disabled', () => {
   assert.equal(state.puzzle.revealedIndexes.length, 0);
 });
 
-test('revealLetter fills blanks left-to-right and skips spaces', () => {
+test('revealLetter picks a random blank via the provided rng, never a space', () => {
   const state = freshGame();
   startGame(state);
   awardPoint(state, 'a'); // JOLLIBEE
   awardPoint(state, 'a'); // JEEPNEY
   assert.equal(state.puzzle.answer, 'PAN DE SAL');
-  assert.equal(revealLetter(state), true);
-  assert.deepEqual(state.puzzle.revealedIndexes, [0]); // 'P'
-  assert.equal(revealLetter(state), true);
-  assert.deepEqual(state.puzzle.revealedIndexes, [0, 1]); // 'A' (index 3 is the space, skipped)
+  // indices: 0 P,1 A,2 N,3 ' ',4 D,5 E,6 ' ',7 S,8 A,9 L
+  // blank candidates (spaces excluded): [0,1,2,4,5,7,8,9]
+  const rng = () => 0.999; // always picks the last candidate in the list
+  assert.equal(revealLetter(state, rng), true);
+  assert.deepEqual(state.puzzle.revealedIndexes, [9]); // last letter, 'L'
+  assert.equal(revealLetter(state, rng), true);
+  assert.deepEqual(state.puzzle.revealedIndexes, [9, 8]); // next remaining candidate, 'A'
+});
+
+test('revealLetter (default rng) never reveals a space and eventually reveals every letter once', () => {
+  const state = freshGame();
+  startGame(state);
+  awardPoint(state, 'a');
+  awardPoint(state, 'a'); // now on PAN DE SAL
+  const letterIndexes = [0, 1, 2, 4, 5, 7, 8, 9];
+  for (let i = 0; i < letterIndexes.length; i++) {
+    assert.equal(revealLetter(state), true);
+  }
+  const sorted = [...state.puzzle.revealedIndexes].sort((a, b) => a - b);
+  assert.deepEqual(sorted, letterIndexes);
+  assert.equal(revealLetter(state), false); // fully revealed
 });
 
 test('revealLetter stops (returns false) once the word is fully revealed', () => {
@@ -94,7 +111,8 @@ test('maskedAnswer hides unrevealed letters, always shows spaces', () => {
   startGame(state);
   awardPoint(state, 'a');
   awardPoint(state, 'a');
-  revealLetter(state); // reveal 'P'
+  assert.equal(state.puzzle.answer, 'PAN DE SAL');
+  revealLetter(state, () => 0); // deterministic: picks the first blank candidate, index 0 ('P')
   const masked = maskedAnswer(state.puzzle);
   assert.equal(masked[0].char, 'P');
   assert.equal(masked[1].char, null);

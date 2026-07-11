@@ -1,4 +1,4 @@
-// Pure rules engine for Icon Guess the Word.
+// Pure rules engine for Emoji Says (formerly "Icon Guess the Word").
 // No DOM, no network — but unlike the first version of this file, there is
 // now an optional per-puzzle timer, so `startTimer`/`checkTimerExpired` take
 // `now` (epoch ms) the same way timed-wordy's fuse functions do, for the
@@ -95,22 +95,25 @@ export function startGame(state) {
   return true;
 }
 
-// Reveals the next blank letter, left to right. Spaces are never blank slots
-// to begin with, so they're skipped when looking for "the next blank". A
-// no-op (returns false) when hints are off, outside PLAYING, or the word is
-// already fully revealed — deliberately not an error, so the UI never needs
-// to special-case a disabled control.
-export function revealLetter(state) {
+// Reveals one random blank letter (not left-to-right — a fixed order made
+// short/early letters too predictable, e.g. always giving away word 1 of a
+// multi-word answer first). Spaces are never blank slots to begin with, so
+// they're excluded from the candidate list. A no-op (returns false) when
+// hints are off, outside PLAYING, or the word is already fully revealed —
+// deliberately not an error, so the UI never needs to special-case a
+// disabled control.
+export function revealLetter(state, rng = Math.random) {
   if (state.phase !== PHASE.PLAYING || !state.hintsEnabled) return false;
   const { answer, revealedIndexes } = state.puzzle;
+  const blanks = [];
   for (let i = 0; i < answer.length; i++) {
     if (answer[i] === ' ') continue;
-    if (!revealedIndexes.includes(i)) {
-      revealedIndexes.push(i);
-      return true;
-    }
+    if (!revealedIndexes.includes(i)) blanks.push(i);
   }
-  return false; // fully revealed already
+  if (blanks.length === 0) return false; // fully revealed already
+  const pick = blanks[Math.floor(rng() * blanks.length)];
+  revealedIndexes.push(pick);
+  return true;
 }
 
 export function awardPoint(state, teamId) {

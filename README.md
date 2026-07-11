@@ -1,4 +1,7 @@
-# 🖼️ Icon Guess the Word
+# 🖼️ Emoji Says
+
+*(formerly "Icon Guess the Word" — renamed for a more natural-sounding
+title; the repo path/GitHub URL are unchanged.)*
 
 A free, ad-free Filipino icon-clue party game that runs entirely in your
 browser and deploys to GitHub Pages. Icons combine — literally, phonetically,
@@ -35,11 +38,11 @@ mixed. The English set is its own set of icon puzzles, not a translation of
 the Tagalog one (the wordplay doesn't carry across languages).
 
 - **🇵🇭 Tagalog**: Food & Local Brands · Pinoy Slang & Sayings ·
-  Teleseryes & Celebrities · Historical Landmarks
+  Teleseryes & Celebrities · Landmark
 - **🇺🇸 English**: Food & Brands · Slang & Sayings · Movies & Celebrities ·
-  Landmarks
+  Places
 
-~20 puzzles per category, easy → hard.
+15-20 puzzles per category, easy → hard.
 
 ## Deploying to GitHub Pages
 

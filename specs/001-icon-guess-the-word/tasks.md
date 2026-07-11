@@ -1,4 +1,4 @@
-# Tasks: Icon Guess the Word — Party Board Game
+# Tasks: Emoji Says — Party Board Game
 
 **Spec**: [spec.md](./spec.md) · **Plan**: [plan.md](./plan.md)
 

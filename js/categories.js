@@ -1,4 +1,4 @@
-// Built-in puzzle categories for Icon Guess the Word.
+// Built-in puzzle categories for Emoji Says (formerly "Icon Guess the Word").
 // Each category: { id, name, language: 'tagalog'|'english', puzzles }
 // Each puzzle: { icons: string[], answer: string, difficulty: 'easy'|'medium'|'hard' }
 // Answers are plain A-Z + spaces only (no apostrophes/accents) to keep the
@@ -24,12 +24,11 @@ export const CATEGORIES = [
       { icons: ['🍳', '🙏'], answer: 'PANDESAL', difficulty: 'easy' },
       { icons: ['🐷', '🔥'], answer: 'LECHON', difficulty: 'easy' },
       { icons: ['🥚', '🐣'], answer: 'BALUT', difficulty: 'easy' },
-      { icons: ['🍧', '🔀'], answer: 'HALOHALO', difficulty: 'easy' },
+      { icons: ['😇', '😇'], answer: 'HALOHALO', difficulty: 'easy' },
       { icons: ['🔴', '🎗️'], answer: 'RED RIBBON', difficulty: 'easy' },
       // medium
-      { icons: ['🍲', '🍋'], answer: 'SINIGANG', difficulty: 'medium' },
+      { icons: ['🍲', '🍋', '🐷'], answer: 'SINIGANG', difficulty: 'medium' },
       { icons: ['🍗', '🧄'], answer: 'ADOBO', difficulty: 'medium' },
-      { icons: ['🥬', '📜'], answer: 'LUMPIA', difficulty: 'medium' },
       { icons: ['🍚', '🎋'], answer: 'SUMAN', difficulty: 'medium' },
       { icons: ['🥛', '🍯'], answer: 'TAHO', difficulty: 'medium' },
       { icons: ['🍜', '👑'], answer: 'CHOWKING', difficulty: 'medium' },
@@ -37,7 +36,6 @@ export const CATEGORIES = [
       // hard
       { icons: ['🟡', '🔒'], answer: 'GOLDILOCKS', difficulty: 'hard' },
       { icons: ['🥔', '↘️'], answer: 'POTATO CORNER', difficulty: 'hard' },
-      { icons: ['🌼', '🍦'], answer: 'MAGNOLIA', difficulty: 'hard' },
       { icons: ['💯', '🥇'], answer: 'PUREGOLD', difficulty: 'hard' },
       { icons: ['🌡️', '💊'], answer: 'MERCURY DRUG', difficulty: 'hard' },
       { icons: ['✏️', '🛍️'], answer: 'PENSHOPPE', difficulty: 'hard' },
@@ -49,12 +47,9 @@ export const CATEGORIES = [
     language: 'tagalog',
     puzzles: [
       // easy
-      { icons: ['🙄'], answer: 'SUS', difficulty: 'easy' },
-      { icons: ['👏'], answer: 'GALING', difficulty: 'easy' },
-      { icons: ['😎'], answer: 'ASTIG', difficulty: 'easy' },
-      { icons: ['💬', '🗣️', '📢'], answer: 'CHIKA', difficulty: 'easy' },
+      { icons: ['🍑', '🪵'], answer: 'ASTIG', difficulty: 'easy' },
+      { icons: ['💬', '🗣️', '📢', '🐤'], answer: 'CHIKA', difficulty: 'easy' },
       { icons: ['💑'], answer: 'JOWA', difficulty: 'easy' },
-      { icons: ['👊'], answer: 'LABAN', difficulty: 'easy' },
       { icons: ['👋'], answer: 'PAALAM', difficulty: 'easy' },
       // medium
       { icons: ['🦋', '💓'], answer: 'KILIG', difficulty: 'medium' },
@@ -62,9 +57,7 @@ export const CATEGORIES = [
       { icons: ['😤', '🙊'], answer: 'TAMPO', difficulty: 'medium' },
       { icons: ['😢', '🗑️'], answer: 'SAYANG', difficulty: 'medium' },
       { icons: ['🎁', '✈️'], answer: 'PASALUBONG', difficulty: 'medium' },
-      { icons: ['🙏', '➡️'], answer: 'BAHALA NA', difficulty: 'medium' },
       // hard
-      { icons: ['🏆', '🔄'], answer: 'LODI', difficulty: 'hard' },
       { icons: ['🐶', '😢'], answer: 'PETMALU', difficulty: 'hard' },
       { icons: ['🔋', '1️⃣'], answer: 'CHARGE MUNA', difficulty: 'hard' },
       { icons: ['❓', '👉'], answer: 'ANO BA YAN', difficulty: 'hard' },
@@ -80,12 +73,12 @@ export const CATEGORIES = [
       // easy
       { icons: ['⭐', '🦸‍♀️'], answer: 'DARNA', difficulty: 'easy' },
       { icons: ['🍽️', '😲'], answer: 'EAT BULAGA', difficulty: 'easy' },
-      { icons: ['📺', '⏰'], answer: 'ITS SHOWTIME', difficulty: 'easy' },
-      { icons: ['🤩', '🤩'], answer: 'WOWOWEE', difficulty: 'easy' },
+      { icons: [{ src: 'images/icons/scratch-head.png' }, '📺', '⏰'], answer: 'ITS SHOWTIME', difficulty: 'easy' },
+      { icons: ['😮', '🤩', '🤩', '🧥'], answer: 'WOWOWEE', difficulty: 'easy' },
       { icons: ['⏰'], answer: 'ASAP', difficulty: 'easy' },
       { icons: ['🐺'], answer: 'LOBO', difficulty: 'easy' },
       // medium
-      { icons: ['🤠', '🔫'], answer: 'ANG PROBINSYANO', difficulty: 'medium' },
+      { icons: ['🥥', '🤠', '🔫'], answer: 'ANG PROBINSYANO', difficulty: 'medium' },
       { icons: ['🌊', '🌊', '💃', '🌺'], answer: 'MARIMAR', difficulty: 'medium' },
       { icons: ['♾️'], answer: 'WALANG HANGGAN', difficulty: 'medium' },
       { icons: ['🔨', '⚒️'], answer: 'ANG PANDAY', difficulty: 'medium' },
@@ -96,20 +89,20 @@ export const CATEGORIES = [
       // hard
       { icons: ['✨', '🏰'], answer: 'ENCANTADIA', difficulty: 'hard' },
       { icons: ['🦅', '🧑'], answer: 'MULAWIN', difficulty: 'hard' },
-      { icons: ['👂', '💅', '👉'], answer: 'PANGAKO SAYO', difficulty: 'hard' },
+      { icons: ['👂', { src: 'images/icons/nail.png' }, '👉'], answer: 'PANGAKO SAYO', difficulty: 'hard' },
       { icons: ['🧠', '❓'], answer: 'MAALAALA MO KAYA', difficulty: 'hard' },
     ],
   },
   {
     id: 'historical-landmarks',
-    name: 'Historical Landmarks',
+    name: 'Landmark',
     language: 'tagalog',
     puzzles: [
       // easy
-      { icons: ['🌋'], answer: 'MAYON VOLCANO', difficulty: 'easy' },
+      { icons: [{ src: 'images/icons/calendar-may.png' }, '🔛', '🌋'], answer: 'MAYON VOLCANO', difficulty: 'easy' },
       { icons: ['🍫', '⛰️'], answer: 'CHOCOLATE HILLS', difficulty: 'easy' },
       { icons: ['🏄', '🏝️'], answer: 'SIARGAO', difficulty: 'easy' },
-      { icons: ['🏝️', '💎'], answer: 'PALAWAN', difficulty: 'easy' },
+      { icons: [{ src: 'images/icons/shovel.png' }, '1️⃣'], answer: 'PALAWAN', difficulty: 'easy' },
       { icons: ['👨', '🔫', '📖'], answer: 'RIZAL MONUMENT', difficulty: 'easy' },
       // medium
       { icons: ['🕊️', '🌳'], answer: 'RIZAL PARK', difficulty: 'medium' },
@@ -117,8 +110,6 @@ export const CATEGORIES = [
       { icons: ['🌾', '🪜'], answer: 'BANAUE RICE TERRACES', difficulty: 'medium' },
       { icons: ['✝️', '⛵'], answer: 'MAGELLANS CROSS', difficulty: 'medium' },
       { icons: ['🏰', '⚔️', '☀️', '🦉'], answer: 'FORT SANTIAGO', difficulty: 'medium' },
-      { icons: ['🌋', '🏝️'], answer: 'TAAL VOLCANO', difficulty: 'medium' },
-      { icons: ['✊', '🗿'], answer: 'BONIFACIO MONUMENT', difficulty: 'medium' },
       { icons: ['🏛️', '🇵🇭'], answer: 'MALACANANG PALACE', difficulty: 'medium' },
       { icons: ['🐴', '🧱', '🌭'], answer: 'VIGAN', difficulty: 'medium' },
       // hard
@@ -221,7 +212,7 @@ export const CATEGORIES = [
   },
   {
     id: 'landmarks-en',
-    name: 'Landmarks',
+    name: 'Places',
     language: 'english',
     puzzles: [
       // easy

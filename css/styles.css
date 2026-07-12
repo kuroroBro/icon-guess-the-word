@@ -47,7 +47,7 @@ h1, h2, h3 {
 #screen-home {
   background:
     linear-gradient(180deg, rgba(23, 11, 46, 0.55) 0%, rgba(23, 11, 46, 0.93) 85%),
-    url('/images/home-bg.jpg') center top / cover no-repeat;
+    url('../images/home-bg.jpg') center top / cover no-repeat;
 }
 
 .muted {

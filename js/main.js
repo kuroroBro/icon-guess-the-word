@@ -3,7 +3,9 @@ import {
   maskedAnswer, startTimer, checkTimerExpired, timerRemainingMs,
 } from './game.js';
 import { CATEGORIES } from './categories.js';
-import { loadSettings, saveSettings } from './storage.js';
+import {
+  countPuzzles, filterUnusedCategories, loadSettings, markPuzzleUsed, resetUsedPuzzleKeys, saveSettings,
+} from './storage.js';
 import { hostRoom, joinRoom, normalizeCode } from './room.js';
 
 const $ = (id) => document.getElementById(id);
@@ -30,6 +32,8 @@ let room = null;        // { code, broadcast, close } (host) or { close } (displ
 let role = null;        // 'host' | 'display'
 let peerCount = 0;
 let clockOffset = 0;    // Display only: hostNow - Date.now() at last snapshot
+
+const RESET_USED_CARDS_MESSAGE = 'All cards in the selected categories have been used. Reset card data so cards can be reused?';
 
 // ---------- shared render helpers (icons / letter tiles) ----------
 // Most icons are plain emoji strings. A few concepts have no real emoji
@@ -111,6 +115,20 @@ function broadcastState() {
   if (room && role === 'host') {
     room.broadcast({ t: 'state', state: redactState(game), hostNow: Date.now() });
   }
+}
+
+function createGameFromUnusedCards() {
+  let categoryPool = filterUnusedCategories(CATEGORIES, settings.categoryIds);
+  if (countPuzzles(categoryPool, settings.categoryIds) === 0) {
+    if (!window.confirm(RESET_USED_CARDS_MESSAGE)) return null;
+    resetUsedPuzzleKeys();
+    categoryPool = CATEGORIES;
+  }
+  return createGame(settings, categoryPool);
+}
+
+function markCurrentPuzzleUsed() {
+  if (role === 'host' && game?.puzzle) markPuzzleUsed(game.puzzle.categoryId, game.puzzle);
 }
 
 // ---------- confetti (small, dependency-free) ----------
@@ -258,7 +276,12 @@ $('btn-start-room').addEventListener('click', () => {
     },
   };
   saveSettings(settings);
-  game = createGame(settings, CATEGORIES);
+  game = createGameFromUnusedCards();
+  if (!game) {
+    $('setup-error').hidden = false;
+    $('setup-error').textContent = 'No unused cards left. Reset card data to start a new game.';
+    return;
+  }
   role = 'host';
 
   $('btn-start-room').disabled = true;
@@ -309,6 +332,7 @@ $('btn-copy-code').addEventListener('click', () => {
 
 $('btn-start-game').addEventListener('click', () => {
   startGame(game);
+  markCurrentPuzzleUsed();
   renderHostPanel();
   showScreen('screen-host-panel');
   broadcastState();
@@ -342,6 +366,7 @@ function renderHostPanel() {
 }
 
 function afterHostAction() {
+  markCurrentPuzzleUsed();
   if (game.phase === PHASE.GAMEOVER) {
     renderGameOver();
     showScreen('screen-gameover');
@@ -402,8 +427,11 @@ function renderGameOver() {
 }
 
 $('btn-play-again').addEventListener('click', () => {
-  game = createGame(settings, CATEGORIES);
+  const nextGame = createGameFromUnusedCards();
+  if (!nextGame) return;
+  game = nextGame;
   startGame(game);
+  markCurrentPuzzleUsed();
   renderHostPanel();
   showScreen('screen-host-panel');
   broadcastState();

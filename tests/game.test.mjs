@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   PHASE, TIMER_STATUS, createGame, startGame, revealLetter, awardPoint, skipPuzzle,
-  maskedAnswer, startTimer, checkTimerExpired, timerRemainingMs,
+  maskedAnswer, startTimer, checkTimerExpired, timerRemainingMs, checkGuess,
 } from '../js/game.js';
 
 const rng = () => 0.5; // deterministic shuffles
@@ -270,4 +270,16 @@ test('targetScore does not fire early and deck exhaustion still works when nobod
   assert.equal(state.phase, PHASE.GAMEOVER); // deck exhausted, not target reached
   assert.equal(state.teams.a.score, 1);
   assert.equal(state.winner, 'a'); // decided by score comparison, not the target
+});
+
+test('checkGuess matches exactly, ignoring case and surrounding whitespace', () => {
+  assert.equal(checkGuess('PAN DE SAL', 'pan de sal'), true);
+  assert.equal(checkGuess('PAN DE SAL', '  Pan De Sal  '), true);
+  assert.equal(checkGuess('PAN DE SAL', 'PANDESAL'), false);
+  assert.equal(checkGuess('JOLLIBEE', 'JOLLIBEE JR'), false);
+  assert.equal(checkGuess('JOLLIBEE', ''), false);
+});
+
+test('checkGuess collapses repeated internal whitespace', () => {
+  assert.equal(checkGuess('PAN DE SAL', 'PAN   DE SAL'), true);
 });

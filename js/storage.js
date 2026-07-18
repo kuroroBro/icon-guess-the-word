@@ -6,6 +6,7 @@ import { CATEGORIES } from './categories.js';
 
 const SETTINGS_KEY = 'iguess.settings.v1';
 const USED_PUZZLES_KEY = 'iguess.usedPuzzleKeys.v1';
+const DISPLAY_SESSION_KEY = 'iguess.displaySession.v1';
 
 export const DEFAULT_SETTINGS = {
   language: 'tagalog',
@@ -71,6 +72,18 @@ export function markPuzzleUsed(categoryId, puzzle) {
 
 export function resetUsedPuzzleKeys() {
   saveUsedPuzzleKeys([]);
+}
+
+export function loadDisplaySession() {
+  const saved = read(DISPLAY_SESSION_KEY, null);
+  return saved && typeof saved.roomCode === 'string' && saved.roomCode
+    ? { roomCode: saved.roomCode.toUpperCase() }
+    : null;
+}
+
+export function saveDisplaySession(roomCode) {
+  const code = String(roomCode || '').toUpperCase();
+  if (code) write(DISPLAY_SESSION_KEY, { roomCode: code });
 }
 
 export function filterUnusedCategories(categoryPool, categoryIds, usedKeys = loadUsedPuzzleKeys()) {

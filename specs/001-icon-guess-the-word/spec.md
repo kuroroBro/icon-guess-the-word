@@ -167,6 +167,8 @@ show the same live game, so I don't need anyone else's phone.
   Display screen is optimized for being read from across a room (big icons,
   big letter tiles, big score plaques).
 - **FR-6** No ads, no analytics, no tracking.
+- **FR-7** Display rejoin uses only a locally stored room code and always
+  receives the same answer-redacted state as a fresh Display connection.
 
 ## Non-goals
 

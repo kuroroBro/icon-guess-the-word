@@ -9,7 +9,7 @@
 | Language | Vanilla ES2020 modules (HTML/CSS/JS) | GitHub Pages serves static files; no build step means the repo *is* the deployable artifact — same call `timed-wordy` made. |
 | Framework | None | The app is one state machine + one render function per screen role; a framework adds weight and a build pipeline for no benefit at this size. |
 | Realtime | [PeerJS](https://peerjs.com/) over WebRTC data channels, vendored in `vendor/` | GitHub Pages cannot host a WebSocket server. PeerJS's free public broker only handles signalling; game traffic is peer-to-peer. Directly reuses the pattern already proven in `timed-wordy`. |
-| Persistence | `localStorage` | Last-used settings only (category selection, hints toggle, team names); no server. |
+| Persistence | `localStorage` | Last-used settings plus the last Display room code; no server. |
 | Tests | `node --test` on the pure logic module | Zero-dependency; runs in CI and locally, same as `timed-wordy`. |
 | Deploy | GitHub Actions → `actions/deploy-pages` | Official Pages flow; deploys repo root on every push to `main`. |
 
@@ -21,7 +21,7 @@ css/styles.css        "modern lively board game" theme; separate Host (mobile-fi
 js/game.js            PURE rules engine (no DOM)
 js/categories.js       built-in categories & puzzles (icons, answer, difficulty, language)
 js/room.js             PeerJS wrapper: host(code) / join(code), broadcast — adapted from timed-wordy's room.js
-js/storage.js          last-used settings in localStorage
+js/storage.js          last-used settings + Display room code in localStorage
 js/main.js             UI wiring, render loop, host action routing
 tests/game.test.mjs    unit tests for game.js
 .github/workflows/deploy.yml   Pages deployment

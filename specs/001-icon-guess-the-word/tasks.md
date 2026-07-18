@@ -152,3 +152,10 @@
   the underlying WebRTC connection times out on its own. Owner decided to
   leave this as-is for now; revisit with a ping/pong heartbeat if it causes
   real problems in practice (see plan.md Changelog v4).
+
+## Phase 7 — Display rejoin persistence
+- [x] Persist the last Display room code locally without storing puzzle
+      answers or Host state.
+- [x] Automatically reconnect when a saved room URL is opened or reloaded;
+      document the Display-only scope and redaction boundary.
+- [x] Add storage coverage through the existing `tests/*.test.mjs` command.

@@ -59,7 +59,7 @@ The site is fully static — no build step.
 ```bash
 python3 -m http.server 8000   # any static server works
 # open http://localhost:8000
-node --test tests/game.test.mjs   # rules-engine unit tests
+node --test tests/*.test.mjs      # rules and local-session unit tests
 ```
 
 ## Design docs (SDD)
@@ -74,3 +74,8 @@ The networking model (PeerJS over WebRTC, host-authoritative, no server) is
 directly adapted from the sibling project
 [`timed-wordy`](https://github.com/kuroroBro/timed-wordy) (Explosive
 Seconds).
+
+Display room codes are remembered locally. Opening a saved room URL (or
+reloading it) automatically reconnects the Display and receives a fresh,
+redacted snapshot; no player identity or answer is stored, and the Host tab
+remains the sole source of game state.

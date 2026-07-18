@@ -4,7 +4,7 @@ import {
 } from './game.js';
 import { CATEGORIES } from './categories.js';
 import {
-  countPuzzles, filterUnusedCategories, loadSettings, markPuzzleUsed, resetUsedPuzzleKeys, saveSettings,
+  countPuzzles, filterUnusedCategories, loadDisplaySession, loadSettings, markPuzzleUsed, resetUsedPuzzleKeys, saveDisplaySession, saveSettings,
 } from './storage.js';
 import { hostRoom, joinRoom, normalizeCode } from './room.js';
 
@@ -215,6 +215,7 @@ $('btn-join').addEventListener('click', () => {
     .then((result) => {
       $('btn-join').disabled = false;
       room = result;
+      saveDisplaySession(code);
       role = 'display';
       game = null;
       resetDisplayView();
@@ -678,3 +679,12 @@ setInterval(() => {
 }, 250);
 
 showScreen('screen-home');
+
+const displayRoom = new URLSearchParams(location.search).get('room');
+if (displayRoom) {
+  $('input-join-code').value = normalizeCode(displayRoom);
+  $('btn-join').textContent = 'Rejoin room';
+  $('btn-join').click();
+} else if (loadDisplaySession()) {
+  $('input-join-code').value = loadDisplaySession().roomCode;
+}
